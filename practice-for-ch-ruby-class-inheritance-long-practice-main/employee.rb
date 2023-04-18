@@ -1,11 +1,16 @@
 
 class Employee
-    def initialize(name, title)
+    attr_reader :salary
+    def initialize(name, title,salary,boss = nil)
         @name = name
         @title = title
-        @salary # hash[title] =
-        @boss # .parent
+        @salary = salary
+        @boss = boss
+    end
+
+    def bonus(multiplier)
+        @salary * multiplier
     end
 end
 
-p tim = Employee.new("Tim", "Barista")
+
