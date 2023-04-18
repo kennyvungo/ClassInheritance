@@ -1,4 +1,5 @@
 require_relative "employee.rb"
+require 'byebug'
 
 class Manager < Employee
 
@@ -12,14 +13,18 @@ class Manager < Employee
     def assign_underling(underling)
         self.underlings << underling
     end
+    def inspect
+        {"name" => @name, "title" => @title, "salary" => @salary}.inspect
+    end
 
     def bonus(multiplier)
         sum = 0
         queue = @underlings
+        # debugger
         until queue.empty?
             ele = queue.shift
             sum += ele.salary
-            if ele.underling
+            if ele.underlings
                 queue += ele.underlings
             end
         end
@@ -31,26 +36,22 @@ end
 # p nitty = Manager.new("nitty","manager",70000)
 # p tim = Employee.new("Tim", "Barista",50000, nitty)
 
-# def bfs(target_value)
-#     queue = [self]
-#     until queue.empty?
-#         ele = queue.shift
-#         if ele.value == target_value
-#             return ele
-#         else
-#             ele.children.each {|child| queue << child}
-#         end
-#     end
-#     nil
-# end
-
 
 # | Nitty    | $1,000,000  | Founder    | nil    |
 # | Darren | $78,000     | TA Manager | Ned    |
 # | Shawna | $12,000     | TA         | Darren |
 # | David  | $10,000     | TA         | Darren |
 
-# p nitty = Manager.new("Nitty", "Founder", 1000000)
-# p darren = Manager.new("Darren", "TA Manager", 78000, nitty)
-# p shawna = Employee.new("Shawna", "TA", 12000, darren)
-# p david = Employee.new("David", "TA", 10000, darren)
+nitty = Manager.new("Nitty", "Founder", 1000000)
+darren = Manager.new("Darren", "TA Manager", 78000, nitty)
+nitty.assign_underling(darren)
+shawna = Employee.new("Shawna", "TA", 12000, darren)
+david = Employee.new("David", "TA", 10000, darren)
+darren.assign_underling(shawna)
+darren.assign_underling(david)
+# p nitty.underlings
+# p darren.underlings
+# p shawna.underlings
+p nitty.bonus(5)
+p darren.bonus(4)
+p david.bonus(3)
